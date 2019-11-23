@@ -20,6 +20,8 @@ services:
     image: redis:alpine
     networks:
       - fnworks
+    volumes:
+      - redisdata:/data
   mysql:
     image: mysql:5.7
     environment:
@@ -36,4 +38,6 @@ networks:
     driver: "bridge"
 volumes:
   mysqldata:
+    driver: "local"
+  redisdata:
     driver: "local"
