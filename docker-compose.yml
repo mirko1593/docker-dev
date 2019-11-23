@@ -1,0 +1,37 @@
+version: '3'
+services:
+  nginx:
+    build: ./nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./app:/var/www/html
+    networks:
+      - fnworks
+  php:
+    build: ./php
+    volumes:
+      - ./app:/var/www/html
+    networks:
+      - fnworks
+  redis:
+    image: redis:alpine
+    networks:
+      - fnworks
+  mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: fnworks
+      MYSQL_USER: deployer
+      MYSQL_PASSWORD: password
+    volumes:
+      - mysqldata:/var/lib/mysql
+    networks:
+      - fnworks
+networks:
+  fnworks:
+    driver: "bridge"
+volumes:
+  mysqldata:
+    driver: "local"
