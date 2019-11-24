@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+export APP_PORT=${APP_PORT:-80}
+export MYSQL_PORT=${MYSQL_PORT:-3306}
+
+COMPOSE="docker-compose"
+
+if [ $# -gt 0 ]; then
+    if [ "$1" == "art" ]; then
+        shift 1
+        $COMPOSE run --rm -w /var/www/html \
+            php \
+            php artisan "$@"
+    elif [ "$1" == "composer" ]; then
+        shift 1
+        $COMPOSE run --rm -w /var/www/html \
+            php \
+            composer "$@"
+    fi
+else
+    docker-compose ps
+fi
